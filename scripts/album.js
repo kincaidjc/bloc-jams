@@ -79,18 +79,49 @@ var setCurrentAlbum = function(album){
     for(var i = 0; i < album.songs.length; i++){
         albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);  
     }
+    // Added lines 83 to 113 to keep the event handles current through page changes.
+    songListContainer.addEventListener('mouseover', function(event){
+        // Only target individual song rows during event delegation
+        if(event.target.parentElement.className === 'album-view-song-item'){
+            //change the content from the number to the play buttons HTML
+        
+            
+            var songItem = getSongItem(event.target);
+            if(songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
+                songItem.innerHTML = playButtonTemplate;
+            }
+            
+        }
+    });
+    
+    for (var i = 0; i < songRows.length; i++){
+        songRows[i].addEventListener('mouseleave', function(event){
+            // #1
+            var songItem = getSongItem(event.target);
+            var songItemNumber = songItem.getAttribute('data-song-number');
+            
+            //2
+            if(songItemNumber !== currentlyPlayingSong){
+                songItem.innerHTML = songItemNumber;
+            }     
+        });
+        
+        songRows[i].addEventListener('click', function(event){
+           // Event handler call 
+            clickHandler(event.target);
+        });
+    }
+    
 };
 
 var findParentByClassName = function(element, targetClass){
-    if(element.parentElement == null){
-        alert("No Parent found");
-    } else if(targetClass.parentElement == null){
-        alert("No parent found within that class name");
-    } else if(element){
+   
+    if(element){
         var currentParent = element.parentElement;
         while(currentParent.className != targetClass && currentParent.className !== null){
             currentParent = currentParent.parentElement
         }
+        
         return currentParent;
     }
 };
@@ -149,13 +180,13 @@ window.onload = function(){
         // Only target individual song rows during event delegation
         if(event.target.parentElement.className === 'album-view-song-item'){
             //change the content from the number to the play buttons HTML
-            event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
+        
             
             var songItem = getSongItem(event.target);
-            
             if(songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
                 songItem.innerHTML = playButtonTemplate;
             }
+            
         }
     });
     
