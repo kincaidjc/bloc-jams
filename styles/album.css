@@ -11,13 +11,18 @@ body.album{
     position: relative;
     left: 20%;
     margin-top: 1rem;
-    width: 60%
+    width: 30%;
+    display: block;
+    float: left
 }
 
 .album-view-details{
     position: relative;
     top: 1.5rem;
     padding: 1rem;
+    margin-left: 10rem;
+    display: block;
+    float: left;
 }
 
 .album-view-details .album-view-title{
